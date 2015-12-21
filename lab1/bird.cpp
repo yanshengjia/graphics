@@ -133,8 +133,11 @@ void mouseClick(int button, int state, int xMouse, int yMouse)
 {
     if( (button==GLUT_LEFT_BUTTON) && (state==GLUT_DOWN) )
     {
-        // 判断鼠标位置是否在矩形中
-        if( abs(xMouse)<50000 && abs(yMouse)<50000 )
+        // 判断鼠标位置是否在图形中
+        
+        //选中图形才能拖动
+        if(xMouse<50000 && yMouse<50000)      //在窗口中都能拖动
+        //if( (xMouse-250)/250.0-(xMove-R)>=0 && (xMouse-250)/250.0-(xMove-R)<=2*R && (250-yMouse)/250.0-(yMove-R)>=0 && (250-yMouse)/250.0-(yMove-R)<=2*R )
         {
             cout<<"flag-true"<<endl;
             flag = true;
@@ -174,6 +177,7 @@ void myKey(unsigned char key, int x, int y)
     {
         cout<<"nose->left"<<endl;
         nose_x -= 0.05;
+        //v2[0][1] = R*(1-cos(Pi/6));
         glutPostRedisplay();
     }
     

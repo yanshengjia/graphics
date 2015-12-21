@@ -157,7 +157,7 @@ void specialKeys(int key, int x, int y)
 
 
 //属性初始化函数
-void init()
+void myInit()
 {
     glMatrixMode(GL_PROJECTION);    //设置当前矩阵模式  GL_PROJECTION: 对投影矩阵应用随后的矩阵操作
     
@@ -171,6 +171,8 @@ void init()
     glClearColor(1.0,1.0,1.0,0.0);  //指定由glClear清除颜色缓存时所使用的红、绿、蓝和alpha值，指定值的范围固定为[0.0f，1.0f]
     
     glColor3f(0.0, 0.0, 0.0);   //颜色函数
+    
+    glEnable(GL_DEPTH_TEST);    //启用深度测试 根据坐标的远近自动隐藏被遮住的图形
 }
 
 
@@ -261,9 +263,7 @@ int main(int argc, char ** argv)
     
     glutDisplayFunc(mydisplay);   //设置显示回调函数mydisplay
     
-    init(); //初始化属性
-    
-    glEnable(GL_DEPTH_TEST);    //启用深度测试 根据坐标的远近自动隐藏被遮住的图形
+    myInit(); //初始化属性
     
     glutMainLoop(); //进入GLUT事件处理循环，让所有的与“事件”有关的函数调用无限循环。在一个GLUT程序中，这个例程被调用一次。一旦被调用，这个程序将永远不会返回 。它将调用必要的任何已注册的回调。
     

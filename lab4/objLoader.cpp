@@ -1,17 +1,9 @@
-#include <GLUT/glut.h>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <fstream>
-#include <cstdio>
-#include <cmath>
-using namespace std;
-#define PI 3.1415926535898
+// objLoader
+// Created by Shengjia Yan
+
+#include "visualBall.h"
 
 int graph;
-float angle = 0.0;
 
 struct coordinate
 {
@@ -200,13 +192,21 @@ void init()
 	glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_DEPTH_TEST);
 
-  graph = objLoader("monkey.obj");
+  graph = objLoader("test.obj");
 
 	glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};                              // 光照颜色为白色
   glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);                                 // 光源中的散射光强度
   glClearColor(1.0,1.0,1.0,0.0);                                                // 背景颜色
+}
+
+void mouseMotion(int x, int y)
+{
+	trackball_ptov(x, y, scr_w, scr_h, curPos);
+	trackMouse();
+
+	glutPostRedisplay();
 }
 
 void display()

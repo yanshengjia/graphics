@@ -6,7 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <GLUT/GLUT.h>
+#include <GLUT/glut.h>  // Mac OSX
+//#include <gl/glut.h>  // Windows
 using namespace std;
 
 #define DELAY 12
@@ -49,7 +50,7 @@ const double ARM_SCALE_Z = 0.3;
 
 //相对坐标常量
 const static double PI = acos(-1.0);
-const double INCREMENT = 0.05;	
+const double INCREMENT = 0.05;
 const int NUM_OF_LINE = 32;
 const int BLOCK_SIZE = 1;
 
@@ -103,7 +104,7 @@ void human()
 	glPushMatrix();
 	glTranslatef(human_x, human_y, human_z);
 	glRotatef(vangle, 0, 1, 0);
-	
+
 	//Hair
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glPushMatrix();
@@ -155,7 +156,7 @@ void human()
 	//Left leg
 	glColor3f(67.0 / 255, 110.0 / 255, 238.0 / 255);
 	glPushMatrix();
-	
+
 	//Thigh
 	glRotatef((GLfloat)left_thigh_angle, 0.0f, 0.0f, 1.0f);
 	glTranslatef(thighL[0], thighL[1], thighL[2]);
@@ -205,10 +206,10 @@ void plane()
 	glTranslatef(x_air, y_air, z_air);
 	glRotatef(xRot, 1.0f, 0.0f, 0.0f);  // 绕X轴旋转
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);  // 绕Y轴旋转
-	
+
 	// 飞机
 	glBegin(GL_TRIANGLES);
-	// 机头 
+	// 机头
 	glColor3f(0.79f, 0.08f, 0.14f);  // 深红
 	glVertex3f(-15.0f / 100, 0.0f / 100, 30.0f / 100);
 	glVertex3f(15.0f / 100, 0.0f / 100, 30.0f / 100);
@@ -285,7 +286,7 @@ void plane()
 	glVertex3f(0.0f / 100, 7.0f / 100, -8.0f / 100);
 	glVertex3f(0.0f / 100, 2.0f / 100, 27.0f / 100);
 
-	// 右翼 
+	// 右翼
 	glColor3f(0.2f, 0.08f, 0.69f);  // 深蓝
 	glVertex3f(0.0f / 100, 2.0f / 100, 27.0f / 100);
 	glVertex3f(0.0f / 100, 7.0f / 100, -8.0f / 100);
@@ -371,7 +372,7 @@ void floor()
 		if (floor_move_x >= BLOCK_SIZE)
 		{
 			floor_move_x -= BLOCK_SIZE;
-		}	
+		}
 		else if (floor_move_x <= -BLOCK_SIZE) {
 			floor_move_x += BLOCK_SIZE;
 		}
@@ -411,7 +412,7 @@ void display()
 	plane();
 	human();
 	crawler();
-	
+
 	glutSwapBuffers();
 }
 
@@ -474,7 +475,7 @@ void refresh(int c)
 			right_arm_angle -= 1.0;
 			right_forearm_angle -= 0.5;
 		}
-		
+
 	}
 	else {
 		right_arm_angle = -90;
@@ -514,7 +515,7 @@ void mouse(int button, int state, int x, int y)
 		{
 			// 左键选中 视角转换
 			flagView = true;
-			
+
 			// 视角放大收缩
 			if (near_sight * view_stretch > 0.5)
 				view_stretch *= STRETCH_SCALE;
@@ -547,7 +548,7 @@ void mouse(int button, int state, int x, int y)
 void motion(int x, int y)
 {
 	//glClear(GL_COLOR_BUFFER_BIT);
-    
+
     if(flagView == true)
     {
         lookatX = -1.5 + (double)x / scr_w * 3;
@@ -559,7 +560,7 @@ void motion(int x, int y)
 		glLoadIdentity();
 		gluLookAt(lookatX * view_stretch, lookatY * view_stretch, lookatZ * view_stretch, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
     }
-  
+
 }
 
 // 当鼠标在窗口中移动时的回调函数
@@ -637,23 +638,23 @@ void control(unsigned char key, int x, int y)
 		glLoadIdentity();
 		gluLookAt(lookatX * view_stretch, lookatY * view_stretch, lookatZ * view_stretch, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 		break;
-	case 'a':	
+	case 'a':
 		// 人左转
 		man_move = true;
 		vangle = (vangle + 3) % 360;
 		break;
-	case 'd':	
+	case 'd':
 		// 人右转
 		man_move = true;
 		vangle = (vangle - 3) % 360;
 		break;
-	case 'w':	
+	case 'w':
 		// 人前进
 		man_move = true;
 		human_x -= INCREMENT * cos((double)vangle / 180.0 * PI);
 		human_z += INCREMENT * sin((double)vangle / 180.0 * PI);
 		break;
-	case 's':	
+	case 's':
 		// 人后退
 		human_x += INCREMENT * cos((double)vangle / 180.0 * PI);
 		human_z -= INCREMENT * sin((double)vangle / 180.0 * PI);
@@ -745,7 +746,7 @@ void menu(int id)
 			y_air = 1.0;
 			z_air = 1.0;
             break;
-            
+
         case 2:
             exit(0);
             break;
@@ -761,7 +762,7 @@ void init()
 	glClearColor(0.745f, 1.0f, 0.973f, 0.0f);   // 天蓝色背景
 
 	glShadeModel(GL_FLAT);
-	
+
 	// 打光
 	GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };  // 明亮的白光
 	glEnable(GL_DEPTH_TEST);    // 影藏面消除
@@ -786,38 +787,38 @@ int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	
+
 	// 设置程序的窗口大小
   	GLint windowWidth = 800;
   	GLint windowHeight = 600;
   	glutInitWindowSize(windowWidth, windowHeight);
-	
+
 	// 获取屏幕的宽和高
-  	GLint SCREEN_WIDTH=glutGet(GLUT_SCREEN_WIDTH);    
-  	GLint SCREEN_HEIGHT=glutGet(GLUT_SCREEN_HEIGHT);  
-  
+  	GLint SCREEN_WIDTH=glutGet(GLUT_SCREEN_WIDTH);
+  	GLint SCREEN_HEIGHT=glutGet(GLUT_SCREEN_HEIGHT);
+
   	glutInitWindowPosition((SCREEN_WIDTH-windowWidth)/2,(SCREEN_HEIGHT-windowHeight)/2);
-  
+
     glutCreateWindow("Aircraft & Man");
-	
+
 	// // 设置弹出式菜单
     // glutCreateMenu(menu);
     // glutAddMenuEntry("revoke", 1);
     // glutAddMenuEntry("quit", 2);
     // glutAttachMenu(GLUT_RIGHT_BUTTON);
-	
+
 	init();
 	refresh(0);
 
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	
+
 	glutMouseFunc(mouse);
-	glutMotionFunc(motion);  
+	glutMotionFunc(motion);
 	//glutPassiveMotionFunc(passiveMotion);
-	
+
 	glutSpecialFunc(specialKeys);
-	
+
 	glutKeyboardUpFunc(controlup);
 	glutKeyboardFunc(control);
 	//glutIdleFunc(idle);

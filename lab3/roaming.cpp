@@ -1,39 +1,41 @@
+// Visual Ball
+// Created by Shengjia Yan & Piao
+
+
 #include "Param.h"
+#include "visualBall.h"
 
 void init()
 {
 	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
-
 	glShadeModel(GL_FLAT);
 	glEnable(GL_DEPTH_TEST);
 
-	GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };  // �����İ׹�
+	GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glEnable(GL_DEPTH_TEST);    // Hidden surface removal
 	glEnable(GL_CULL_FACE);        // Do not calculate inside of jet
 	glFrontFace(GL_CCW);        // Counter clock-wise polygons face out
 
-	glEnable(GL_COLOR_MATERIAL);  // ������ɫ׷��
+	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 
-	//���û�ɫ����ȡ�ð�͸��Ч��
 	//glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	//glShadeModel(GL_SMOOTH);
 	//glEnable(GL_BLEND);
 
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight); // ���ù���ģ��
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);  // ������ɫ׷�ٵĲ��������Լ������ε���
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 }
 
 void human()
 {
-	// ��
 	glPushMatrix();
 	glTranslatef(man.x, man.y, man.z);
 	glRotatef(man.vangle, 0, 1, 0);
 
-	////////////////////////////Hair//////////////////////////
+	// hair
 	glColor3f(0.0f, 0.0f, 0.0f);
 	glPushMatrix();
 	glTranslatef(man.hair.x, man.hair.y, man.hair.z);
@@ -41,7 +43,6 @@ void human()
 	glutSolidCube(1);
 	glPopMatrix();
 
-	///////////////////////////Head////////////////////////////
 	// head
 	glColor3f(139.0 / 255, 115.0 / 255, 85.0 / 255);
 	glPushMatrix();
@@ -75,7 +76,7 @@ void human()
 	glPopMatrix();
 
 
-	///////////////////////////Body////////////////////////////
+	// body
 	glColor3f(0.0f, 206.0 / 255, 209.0 / 255);
 	glPushMatrix();
 	glTranslatef(man.body.x, man.body.y, man.body.z);
@@ -83,8 +84,7 @@ void human()
 	glutSolidCube(1);
 	glPopMatrix();
 
-	/////////////////////////Leg/////////////////////////
-	//Left leg
+	// Left leg
 	glColor3f(67.0 / 255, 110.0 / 255, 238.0 / 255);
 	glPushMatrix();
 	glTranslatef(man.thighL.x, 2 * man.thighL.y, man.thighL.z);
@@ -94,7 +94,7 @@ void human()
 	glutSolidCube(1);
 	glPopMatrix();
 
-	//Right leg
+	// Right leg
 	glColor3f(67.0 / 255, 110.0 / 255, 238.0 / 255);
 	glPushMatrix();
 	glTranslatef(man.thighR.x,2 * man.thighR.y, man.thighR.z);
@@ -104,9 +104,7 @@ void human()
 	glutSolidCube(1);
 	glPopMatrix();
 
-	///////////////////////Arm////////////////////////
-
-	//Left Arm
+	// Left Arm
 	glColor3f(139.0 / 255, 115.0 / 255, 85.0 / 255);
 	glPushMatrix();
 	glTranslatef(man.armL.x, man.arm_scale.y / 2 + man.armL.y, man.armL.z);
@@ -126,9 +124,6 @@ void human()
 	glutSolidCube(1);
 	glPopMatrix();
 
-
-
-
 	glPopMatrix();
 }
 
@@ -139,8 +134,6 @@ void reference()
 	glScalef(1, 4, 1);
 	glutSolidCube(1);
 	glPopMatrix();
-
-
 }
 
 void floor()
@@ -165,7 +158,6 @@ void display()
 	human();
 	reference();
 	//crawler();
-
 
 	glutSwapBuffers();
 	//glMatrixMode(GL_PROJECTION);
@@ -231,43 +223,40 @@ void display()
 
 	//cout <<"x:"<< human_x <<"y:"<< human_y<<"z:"<< human_z<< endl;
 
-
 }
 
-// ����ƽ������Ӧ�������ϵ�λ�ã�����ֵ��v��
-void trackball_ptov(int x, int y, int width, int height, float v[3])
-{
-	// ��x,yͶӰ����width��height��Χ�ڵİ�������
-	float d, a;
-
-	/// ����ϵ�任��ʵ�ֹ�һ��x��y�ķ�ΧΪ��-1,1��
-	v[0] = (2.0F*x - width) / width;
-	v[1] = (height - 2.0*y) / height;
-	d = (float)sqrt(v[0] * v[0] + v[1] * v[1]);
-	v[2] = (float)cos((PI / 2.0F) * ((d < 1.0F) ? d : 1.0F));	  // һ�ֶ�Ӧ�����������������㲻�ڰ��򸲸Ƿ�Χ�ڵ�����
-	a = 1 / (float)sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); // ��һ��
-	v[0] *= a;
-	v[1] *= a;
-	v[2] *= a;
-}
-
-void startMotion(int x, int y)
-{
-	trackingMouse = true;
-	redrawContinue = false;
-	startX = x; startY = y;
-	curx = x; cury = y;
-	trackball_ptov(x, y, scr_w, scr_h, lastPos);
-	trackballMove = true;
-}
-
-void stopMotion(int x, int y)
-{
-	trackingMouse = false;
-	angle = 0.0F;
-	redrawContinue = false;
-	trackballMove = false;
-}
+// // trackball
+// void trackball_ptov(int x, int y, int width, int height, float v[3])
+// {
+// 	float d, a;
+//
+// 	v[0] = (2.0F*x - width) / width;
+// 	v[1] = (height - 2.0*y) / height;
+// 	d = (float)sqrt(v[0] * v[0] + v[1] * v[1]);
+// 	v[2] = (float)cos((PI / 2.0F) * ((d < 1.0F) ? d : 1.0F));
+// 	a = 1 / (float)sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+// 	v[0] *= a;
+// 	v[1] *= a;
+// 	v[2] *= a;
+// }
+//
+// void startMotion(int x, int y)
+// {
+// 	trackingMouse = true;
+// 	redrawContinue = false;
+// 	startX = x; startY = y;
+// 	curx = x; cury = y;
+// 	trackball_ptov(x, y, scr_w, scr_h, lastPos);
+// 	trackballMove = true;
+// }
+//
+// void stopMotion(int x, int y)
+// {
+// 	trackingMouse = false;
+// 	angle = 0.0F;
+// 	redrawContinue = false;
+// 	trackballMove = false;
+// }
 
 void passiveMotion(int x, int y)
 {
@@ -339,8 +328,6 @@ void reshape(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-
-	//�л��ӽ�
 	//gluLookAt(lookatX,lookatY,lookatZ,0.0f,0.0f,0.0f,0.0f,1.0f,0.0f);
 	//gluLookAt(lookatX, lookatY, lookatZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 }
@@ -350,7 +337,6 @@ void mouse(int button, int state, int x, int y)
 	switch (button)
 	{
 	case GLUT_LEFT_BUTTON:
-		//�ӽǷŴ�
 		if (state == GLUT_DOWN && near_sight * VIEW_SCALE > 5)
 		{
 			/*near_sight /= VIEW_SCALE;
@@ -368,7 +354,6 @@ void mouse(int button, int state, int x, int y)
 		}
 		break;
 	case GLUT_RIGHT_BUTTON:
-		// �ӽ�����
 		if (state == GLUT_DOWN && far_sight / VIEW_SCALE <1000)
 		{
 			/*near_sight *= VIEW_SCALE;
@@ -403,46 +388,40 @@ void mouseButton(int button, int state, int x, int y)
 		}
 }
 
-// �����ƶ��ص�����
 void mouseMotion(int x, int y)
 {
-	float curPos[3], dx, dy, dz;
+	// float curPos[3], dx, dy, dz;
 
 	trackball_ptov(x, y, scr_w, scr_h, curPos);
 
-	if (trackingMouse)
-	{
-		// ����������
-		dx = curPos[0] - lastPos[0];
-		dy = curPos[1] - lastPos[1];
-		dz = curPos[2] - lastPos[2];
-
-		// ���߲���ͬʱΪ0�������൱��û��
-		if (dx || dy || dz)
-		{
-			// ������ת�Ƕȣ���ת�Ƕ���sin�ǶȽ���
-			angle = 90.0F * sqrt(dx*dx + dy*dy + dz*dz);
-
-			// �����������õ���ת��
-			axis[0] = lastPos[1] * curPos[2] - lastPos[2] * curPos[1];
-			axis[1] = lastPos[2] * curPos[0] - lastPos[0] * curPos[2];
-			axis[2] = lastPos[0] * curPos[1] - lastPos[1] * curPos[0];
-
-			// ������λ������
-			lastPos[0] = curPos[0];
-			lastPos[1] = curPos[1];
-			lastPos[2] = curPos[2];
-		}
-	}
+	// if (trackingMouse)
+	// {
+	// 	dx = curPos[0] - lastPos[0];
+	// 	dy = curPos[1] - lastPos[1];
+	// 	dz = curPos[2] - lastPos[2];
+	//
+	// 	if (dx || dy || dz)
+	// 	{
+	// 		angle = 90.0F * sqrt(dx*dx + dy*dy + dz*dz);
+	//
+	// 		axis[0] = lastPos[1] * curPos[2] - lastPos[2] * curPos[1];
+	// 		axis[1] = lastPos[2] * curPos[0] - lastPos[0] * curPos[2];
+	// 		axis[2] = lastPos[0] * curPos[1] - lastPos[1] * curPos[0];
+	//
+	// 		lastPos[0] = curPos[0];
+	// 		lastPos[1] = curPos[1];
+	// 		lastPos[2] = curPos[2];
+	// 	}
+	// }
 	glutPostRedisplay();
 }
-// ���лص�����
+
 void idle()
 {
-	// �������귢���ƶ����������Զ�ת��
 	if (redrawContinue) glutPostRedisplay();
 }
-// ��������
+
+
 void control(unsigned char key, int x, int y)
 {
 	switch (key)
@@ -479,13 +458,13 @@ void control(unsigned char key, int x, int y)
 			switch(view_person)
 			{
 				case 0:
-					cout<<"上帝视角"<<endl;
+					cout<<"God View"<<endl;
 					break;
 				case 1:
-					cout<<"第一视角"<<endl;
+					cout<<"First View"<<endl;
 					break;
 				case 2:
-					cout<<"第三视角"<<endl;
+					cout<<"Third View"<<endl;
 					break;
 				default:
 					break;
@@ -511,7 +490,7 @@ void control(unsigned char key, int x, int y)
 	}
 
 }
-// �����ɿ�
+
 void controlup(unsigned char key, int x, int y)
 {
 	switch (key) {
@@ -530,16 +509,15 @@ void controlup(unsigned char key, int x, int y)
 	}
 }
 
+
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	// 设置程序的窗口大小
   	GLint windowWidth = 600;
   	GLint windowHeight = 600;
   	glutInitWindowSize(windowWidth, windowHeight);
 
-	// 获取屏幕的宽和高
   	GLint SCREEN_WIDTH=glutGet(GLUT_SCREEN_WIDTH);
   	GLint SCREEN_HEIGHT=glutGet(GLUT_SCREEN_HEIGHT);
   	glutInitWindowPosition((SCREEN_WIDTH-windowWidth)/2,(SCREEN_HEIGHT-windowHeight)/2);

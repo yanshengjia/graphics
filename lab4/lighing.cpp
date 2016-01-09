@@ -1,17 +1,17 @@
 #include "Param.h"
 
-//¹âÔ´Ì«Ñô
+//å…‰æºå¤ªé˜³
 GLfloat s_angle = 0.0f;
-GLfloat LightPosition[] = { 0.0f,0.0f,0.0f,1.0f };		//¹âÔ´Î»ÖÃ
+GLfloat LightPosition[] = { 0.0f,0.0f,0.0f,1.0f };		//å…‰æºä½ç½®
 
 GLfloat ambient = 0.4f;
-GLfloat LightAmbient[] = { ambient,ambient,ambient,1.0f };		//»·¾³¹â
+GLfloat LightAmbient[] = { ambient,ambient,ambient,1.0f };		//ç¯å¢ƒå…‰
 GLfloat diffuse = 1.0f;
-GLfloat LightDiffuse[] = { diffuse,diffuse,diffuse,1.0f };		//Âş·´Éä
+GLfloat LightDiffuse[] = { diffuse,diffuse,diffuse,1.0f };		//æ¼«åå°„
 GLfloat specular = 1.0f;
-GLfloat LightSpecular[] = { specular,0.0f,0.0f,1.0f };	//¾µÃæ·´Éä
+GLfloat LightSpecular[] = { specular,0.0f,0.0f,1.0f };	//é•œé¢åå°„
 
-//²ÄÁÏ²ÎÊı
+//ææ–™å‚æ•°
 GLfloat matEmissionR, matEmissionG, matEmissionB;
 GLfloat	MatEmission[] = { matEmissionR, matEmissionG, matEmissionB, 1.0f };
 GLfloat matAmbientR, matAmbientG, matAmbientB;
@@ -24,7 +24,7 @@ GLfloat MatShininess;
 
 void human()
 {
-	// ÈË
+	// äºº
 	glPushMatrix();
 	glTranslatef(man.x, man.y, man.z);
 	glRotatef(man.vangle, 0, 1, 0);
@@ -149,7 +149,7 @@ void floor()
 	}
 }
 
-// ¹âÔ´Ì«Ñô
+// å…‰æºå¤ªé˜³
 void sun()
 {
 	cout << "ambient:"<<ambient<<endl;
@@ -157,15 +157,15 @@ void sun()
 	glRotated(s_angle, 1, 0, 0);
 	glTranslatef(0.0f, 5.0f, 0.0f);
 
-	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);		//ÉèÖÃ»·¾³¹â
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);		//ÉèÖÃÂşÉä¹â
-	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);	//¾µÃæ¹â
-	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);	//ÉèÖÃ¹âÔ´Î»ÖÃ
+	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);		//è®¾ç½®ç¯å¢ƒå…‰
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);		//è®¾ç½®æ¼«å°„å…‰
+	glLightfv(GL_LIGHT0, GL_SPECULAR, LightSpecular);	//é•œé¢å…‰
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);	//è®¾ç½®å…‰æºä½ç½®
 
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHTING);
 
-	//»æÖÆ°×É«µÄÌ«Ñô
+	//ç»˜åˆ¶ç™½è‰²çš„å¤ªé˜³
 	MatShininess = 230.0f;
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, MatShininess);
 
@@ -280,19 +280,19 @@ void init()
 	glEnable(GL_COLOR_MATERIAL);
 }
 
-// ¼ÆËãÆ½Ãæµã¶ÔÓ¦¸ú×ÙÇòÉÏµÄÎ»ÖÃ£¬·µ»ØÖµÔÚvÖĞ
+// è®¡ç®—å¹³é¢ç‚¹å¯¹åº”è·Ÿè¸ªçƒä¸Šçš„ä½ç½®ï¼Œè¿”å›å€¼åœ¨vä¸­
 void trackball_ptov(int x, int y, int width, int height, float v[3])
 {
-	// ½«x,yÍ¶Ó°µ½ÔÚwidthºÍheight·¶Î§ÄÚµÄ°ëÇòÃæÉÏ
+	// å°†x,yæŠ•å½±åˆ°åœ¨widthå’ŒheightèŒƒå›´å†…çš„åŠçƒé¢ä¸Š
 	float d, a;
 
 
-	/// ×ø±êÏµ±ä»»£¬ÊµÏÖ¹éÒ»»¯x£¬yµÄ·¶Î§Îª£¨-1,1£©
+	/// åæ ‡ç³»å˜æ¢ï¼Œå®ç°å½’ä¸€åŒ–xï¼Œyçš„èŒƒå›´ä¸ºï¼ˆ-1,1ï¼‰
 	v[0] = (2.0F*x - width) / width;
 	v[1] = (height - 2.0*y) / height;
 	d = (float)sqrt(v[0] * v[0] + v[1] * v[1]);
-	v[2] = (float)cos((PI / 2.0F) * ((d < 1.0F) ? d : 1.0F));	  // Ò»ÖÖ¶ÔÓ¦·½°¸£¬½â¾öÁËÈç¹ûµã²»ÔÚ°ëÇò¸²¸Ç·¶Î§ÄÚµÄÇé¿ö				
-	a = 1 / (float)sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); // ¹éÒ»»¯
+	v[2] = (float)cos((PI / 2.0F) * ((d < 1.0F) ? d : 1.0F));	  // ä¸€ç§å¯¹åº”æ–¹æ¡ˆï¼Œè§£å†³äº†å¦‚æœç‚¹ä¸åœ¨åŠçƒè¦†ç›–èŒƒå›´å†…çš„æƒ…å†µ
+	a = 1 / (float)sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]); // å½’ä¸€åŒ–
 	v[0] *= a;
 	v[1] *= a;
 	v[2] *= a;
@@ -313,19 +313,19 @@ void stopMotion(int x, int y)
 {
 	trackingMouse = false;
 
-	 if (startX != x || startY != y)	 // Èç¹ûÊó±ê·¢ÉúÒÆ¶¯£¬ÔòºóÃæ×Ô¶¯×ª¶¯
+	 if (startX != x || startY != y)	 // å¦‚æœé¼ æ ‡å‘ç”Ÿç§»åŠ¨ï¼Œåˆ™åé¢è‡ªåŠ¨è½¬åŠ¨
 	 {
 		 cout << "startX:" << startX << "realX:" << x << endl;
 		 cout << "startY:" << startY << "realY:" << y << endl;
 	 	redrawContinue = true;
-	 } 
-	 else	// Èç¹û°´ÏÂÊó±êºóÃ»ÓĞÒÆ¶¯£¬ÔòÍ£Ö¹×Ô¶¯×ª¶¯
+	 }
+	 else	// å¦‚æœæŒ‰ä¸‹é¼ æ ‡åæ²¡æœ‰ç§»åŠ¨ï¼Œåˆ™åœæ­¢è‡ªåŠ¨è½¬åŠ¨
 	 {
 		angle = 0.0F;
 		redrawContinue = false;
 		trackballMove = false;
 
-		//ÊÓ½Ç·Å´ó
+		//è§†è§’æ”¾å¤§
 		if (near_sight * VIEW_SCALE > 0.1)
 		{
 			/*near_sight /= VIEW_SCALE;
@@ -392,7 +392,7 @@ void refresh(int c)
 		}
 
 	}
-	else 
+	else
 	{
 		man.raangle = 0;
 		man.laangle = 0;
@@ -420,7 +420,7 @@ void mouse(int button, int state, int x, int y)
 	switch (button)
 	{
 	case GLUT_LEFT_BUTTON:
-		//ÊÓ½Ç·Å´ó
+		//è§†è§’æ”¾å¤§
 		if (state == GLUT_DOWN && near_sight * VIEW_SCALE > 5)
 		{
 			/*near_sight /= VIEW_SCALE;
@@ -438,7 +438,7 @@ void mouse(int button, int state, int x, int y)
 		}
 		break;
 	case GLUT_RIGHT_BUTTON:
-		// ÊÓ½ÇÊÕËõ
+		// è§†è§’æ”¶ç¼©
 		if (state == GLUT_DOWN && far_sight / VIEW_SCALE <1000)
 		{
 			cameraAt.x *= VIEW_SCALE;
@@ -449,7 +449,7 @@ void mouse(int button, int state, int x, int y)
 	}
 }
 
-// Êó±êµã»÷º¯Êı
+// é¼ æ ‡ç‚¹å‡»å‡½æ•°
 void mouseButton(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON)
@@ -466,7 +466,7 @@ void mouseButton(int button, int state, int x, int y)
 		}
 	else if (button == GLUT_RIGHT_BUTTON)
 	{
-		// ÊÓ½ÇÊÕËõ
+		// è§†è§’æ”¶ç¼©
 		if (state == GLUT_DOWN && far_sight / VIEW_SCALE <1000)
 		{
 			/*near_sight *= VIEW_SCALE;
@@ -477,7 +477,7 @@ void mouseButton(int button, int state, int x, int y)
 		}
 	}
 }
-// Êó±êÒÆ¶¯»Øµ÷º¯Êı
+// é¼ æ ‡ç§»åŠ¨å›è°ƒå‡½æ•°
 void mouseMotion(int x, int y)
 {
 	float curPos[3], dx, dy, dz;
@@ -486,23 +486,23 @@ void mouseMotion(int x, int y)
 
 	if (trackingMouse)
 	{
-		// ¼ÆËã²îÏòÁ¿
+		// è®¡ç®—å·®å‘é‡
 		dx = curPos[0] - lastPos[0];
 		dy = curPos[1] - lastPos[1];
 		dz = curPos[2] - lastPos[2];
 
-		// ÈıÕß²»ÄÜÍ¬Ê±Îª0£¬·ñÔòÏàµ±ÓÚÃ»¶¯
+		// ä¸‰è€…ä¸èƒ½åŒæ—¶ä¸º0ï¼Œå¦åˆ™ç›¸å½“äºæ²¡åŠ¨
 		if (dx || dy || dz)
 		{
-			// ¼ÆËãĞı×ª½Ç¶È£¬Ğı×ª½Ç¶ÈÓësin½Ç¶È½üËÆ
+			// è®¡ç®—æ—‹è½¬è§’åº¦ï¼Œæ—‹è½¬è§’åº¦ä¸sinè§’åº¦è¿‘ä¼¼
 			angle = 90.0F * sqrt(dx*dx + dy*dy + dz*dz);
 
-			// ¼ÆËã²æ»ı£¬µÃµ½Ğı×ªÖá
+			// è®¡ç®—å‰ç§¯ï¼Œå¾—åˆ°æ—‹è½¬è½´
 			axis[0] = lastPos[1] * curPos[2] - lastPos[2] * curPos[1];
 			axis[1] = lastPos[2] * curPos[0] - lastPos[0] * curPos[2];
 			axis[2] = lastPos[0] * curPos[1] - lastPos[1] * curPos[0];
 
-			// ±£´æĞÂÎ»ÖÃ×ø±ê
+			// ä¿å­˜æ–°ä½ç½®åæ ‡
 			lastPos[0] = curPos[0];
 			lastPos[1] = curPos[1];
 			lastPos[2] = curPos[2];
@@ -510,13 +510,13 @@ void mouseMotion(int x, int y)
 	}
 	glutPostRedisplay();
 }
-// ¿ÕÏĞ»Øµ÷º¯Êı
+// ç©ºé—²å›è°ƒå‡½æ•°
 void idle()
 {
-	// Èç¹ûÊó±ê·¢ÉúÒÆ¶¯£¬ÔòºóÃæ×Ô¶¯×ª¶¯
+	// å¦‚æœé¼ æ ‡å‘ç”Ÿç§»åŠ¨ï¼Œåˆ™åé¢è‡ªåŠ¨è½¬åŠ¨
 	if (redrawContinue) glutPostRedisplay();
 }
-// ¼üÅÌÊäÈë
+// é”®ç›˜è¾“å…¥
 void control(unsigned char key, int x, int y)
 {
 	switch (key)
@@ -605,7 +605,7 @@ void control(unsigned char key, int x, int y)
 	}
 
 }
-// °´¼üËÉ¿ª
+// æŒ‰é”®æ¾å¼€
 void controlup(unsigned char key, int x, int y)
 {
 	switch (key) {

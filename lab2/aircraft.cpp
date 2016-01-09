@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <GLUT/GLUT.h>
+#include <GLUT/glut.h>  // Mac OSX
+//#include <gl/glut.h>  // Windows
 using namespace std;
 
 

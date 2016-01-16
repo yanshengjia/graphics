@@ -703,7 +703,6 @@ void initCube()
 	texSand = load_texture("img/sand.bmp");
 
 
-	int x, y, z;
 	int num_cube = 25;
 
 	for (int i = num_cube; i >= (-num_cube); i--)

@@ -1,2 +1,2 @@
 # OpenGL
-SEU Computer Graphics Assignments & Docs
+SEU Computer Graphics Projects

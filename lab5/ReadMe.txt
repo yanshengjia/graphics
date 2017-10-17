@@ -1,3 +1,5 @@
+# My Minecraft
+
 本程序在 OSX 10.11.1 系统下编译通过。
 如果要在Windows下编译运行运行需要把当前程序中的 #include <GLUT/glut.h> 替换成 #include <gl/GLUT.h> ，再将源文件和头文件拷贝入 Visual Studio 新工程，用 Visual Studio 编译运行即可。
 

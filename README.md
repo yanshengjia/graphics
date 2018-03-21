@@ -1,2 +1,2 @@
-# OpenGL
+# Graphics
 SEU Computer Graphics Projects
